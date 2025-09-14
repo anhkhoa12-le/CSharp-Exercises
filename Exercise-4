@@ -1,0 +1,192 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+public class Functions
+{
+    // 1.1. Hàm tìm số lớn nhất trong ba số
+    public static int LargestOfThree(int a, int b, int c)
+    {
+        return Math.Max(a, Math.Max(b, c));
+    }
+
+    // 1.2. Hàm tìm số lớn nhất trong một mảng số (sử dụng params)
+    public static int LargestOfNumbers(params int[] numbers)
+    {
+        if (numbers == null || numbers.Length == 0)
+        {
+            throw new ArgumentException("Input array cannot be null or empty.");
+        }
+
+        int max = numbers[0];
+        for (int i = 1; i < numbers.Length; i++)
+        {
+            if (numbers[i] > max)
+            {
+                max = numbers[i];
+            }
+        }
+        return max;
+    }
+
+    // 2. Hàm tính giai thừa của một số
+    public static long Factorial(int n)
+    {
+        if (n < 0)
+        {
+            throw new ArgumentException("Factorial is not defined for negative numbers.");
+        }
+        if (n == 0)
+        {
+            return 1;
+        }
+
+        long result = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            result *= i;
+        }
+        return result;
+    }
+
+    // 3. Hàm kiểm tra số nguyên tố
+    public static bool IsPrime(int number)
+    {
+        if (number <= 1)
+        {
+            return false;
+        }
+        for (int i = 2; i <= Math.Sqrt(number); i++)
+        {
+            if (number % i == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 4.1. Hàm in tất cả các số nguyên tố nhỏ hơn một số cho trước
+    public static void PrintPrimesLessThan(int limit)
+    {
+        Console.WriteLine($"\nPrime numbers less than {limit}:");
+        for (int i = 2; i < limit; i++)
+        {
+            if (IsPrime(i))
+            {
+                Console.Write(i + " ");
+            }
+        }
+        Console.WriteLine();
+    }
+
+    // 4.2. Hàm in N số nguyên tố đầu tiên
+    public static void PrintFirstNPrimes(int n)
+    {
+        if (n <= 0)
+        {
+            Console.WriteLine("\nNumber of primes must be positive.");
+            return;
+        }
+
+        Console.WriteLine($"\nFirst {n} prime numbers:");
+        int count = 0;
+        int number = 2;
+        while (count < n)
+        {
+            if (IsPrime(number))
+            {
+                Console.Write(number + " ");
+                count++;
+            }
+            number++;
+        }
+        Console.WriteLine();
+    }
+
+    // 5. Hàm kiểm tra số hoàn hảo
+    public static bool IsPerfect(int number)
+    {
+        if (number <= 1)
+        {
+            return false;
+        }
+        int sumOfDivisors = 1;
+        for (int i = 2; i * i <= number; i++)
+        {
+            if (number % i == 0)
+            {
+                sumOfDivisors += i;
+                if (i * i != number)
+                {
+                    sumOfDivisors += number / i;
+                }
+            }
+        }
+        return sumOfDivisors == number;
+    }
+
+    // 5.1. Hàm in tất cả các số hoàn hảo nhỏ hơn 1000
+    public static void PrintPerfectNumbersLessThan1000()
+    {
+        Console.WriteLine("\nPerfect numbers less than 1000:");
+        for (int i = 1; i < 1000; i++)
+        {
+            if (IsPerfect(i))
+            {
+                Console.Write(i + " ");
+            }
+        }
+        Console.WriteLine();
+    }
+
+    // 6. Hàm kiểm tra xâu Pangram
+    public static bool IsPangram(string text)
+    {
+        // Chuyển chuỗi về chữ thường và loại bỏ các ký tự không phải chữ cái
+        text = text.ToLower();
+        var letters = new HashSet<char>();
+        foreach (char c in text)
+        {
+            if (char.IsLetter(c))
+            {
+                letters.Add(c);
+            }
+        }
+        return letters.Count == 26;
+    }
+
+    public static void Main(string[] args)
+    {
+        // Demo các hàm
+        Console.WriteLine("--- Demo LargestOfThree ---");
+        Console.WriteLine($"Largest of (10, 20, 5): {LargestOfThree(10, 20, 5)}");
+
+        Console.WriteLine("\n--- Demo LargestOfNumbers ---");
+        Console.WriteLine($"Largest of (10, 20, 5, 50, 2): {LargestOfNumbers(10, 20, 5, 50, 2)}");
+
+        Console.WriteLine("\n--- Demo Factorial ---");
+        Console.WriteLine($"Factorial of 5: {Factorial(5)}");
+        Console.WriteLine($"Factorial of 0: {Factorial(0)}");
+
+        Console.WriteLine("\n--- Demo IsPrime ---");
+        Console.WriteLine($"Is 7 a prime number? {IsPrime(7)}");
+        Console.WriteLine($"Is 10 a prime number? {IsPrime(10)}");
+
+        Console.WriteLine("\n--- Demo PrintPrimesLessThan ---");
+        PrintPrimesLessThan(20);
+
+        Console.WriteLine("\n--- Demo PrintFirstNPrimes ---");
+        PrintFirstNPrimes(5);
+
+        Console.WriteLine("\n--- Demo Perfect Numbers ---");
+        Console.WriteLine($"Is 28 a perfect number? {IsPerfect(28)}");
+        PrintPerfectNumbersLessThan1000();
+
+        Console.WriteLine("\n--- Demo IsPangram ---");
+        string pangram = "The quick brown fox jumps over the lazy dog";
+        Console.WriteLine($"Is \"{pangram}\" a pangram? {IsPangram(pangram)}");
+        string notPangram = "Hello world";
+        Console.WriteLine($"Is \"{notPangram}\" a pangram? {IsPangram(notPangram)}");
+    }
+}

@@ -1,0 +1,184 @@
+// Tạo một mảng ngẫu nhiên
+function createRandomArray(length, max) {
+  const arr = [];
+  for (let i = 0; i < length; i++) {
+    arr.push(Math.floor(Math.random() * max));
+  }
+  return arr;
+}
+
+const myIntArray = createRandomArray(15, 100);
+console.log(`Mảng ban đầu: [${myIntArray}]`);
+console.log('---');
+
+// 1. Tính giá trị trung bình
+function calculateAverage(arr) {
+  if (arr.length === 0) return 0;
+  const sum = arr.reduce((acc, curr) => acc + curr, 0);
+  return sum / arr.length;
+}
+
+console.log(`Giá trị trung bình của mảng: ${calculateAverage(myIntArray).toFixed(2)}`);
+console.log('---');
+
+// 2. Kiểm tra mảng có chứa một giá trị cụ thể
+function containsValue(arr, value) {
+  return arr.includes(value);
+}
+
+const valueToCheck = 42;
+console.log(`Mảng có chứa giá trị ${valueToCheck} không? ${containsValue(myIntArray, valueToCheck) ? 'Có' : 'Không'}`);
+console.log('---');
+
+// 3. Tìm chỉ mục của một phần tử
+function findIndex(arr, value) {
+  return arr.indexOf(value);
+}
+
+const valueToFindIndex = myIntArray[5];
+console.log(`Chỉ mục của phần tử ${valueToFindIndex} là: ${findIndex(myIntArray, valueToFindIndex)}`);
+console.log('---');
+
+// 4. Xóa một phần tử cụ thể khỏi mảng
+function removeElement(arr, element) {
+  const newArr = [...arr];
+  const index = newArr.indexOf(element);
+  if (index > -1) {
+    newArr.splice(index, 1);
+  }
+  return newArr;
+}
+
+const elementToRemove = myIntArray[0];
+const arrayAfterRemoval = removeElement(myIntArray, elementToRemove);
+console.log(`Xóa phần tử ${elementToRemove}: [${arrayAfterRemoval}]`);
+console.log('---');
+
+// 5. Tìm giá trị lớn nhất và nhỏ nhất
+function findMinMax(arr) {
+  if (arr.length === 0) return { min: undefined, max: undefined };
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  return { min, max };
+}
+
+const minMax = findMinMax(myIntArray);
+console.log(`Giá trị nhỏ nhất: ${minMax.min}`);
+console.log(`Giá trị lớn nhất: ${minMax.max}`);
+console.log('---');
+
+// 6. Đảo ngược mảng
+function reverseArray(arr) {
+  return [...arr].reverse();
+}
+
+const reversedArray = reverseArray(myIntArray);
+console.log(`Mảng đảo ngược: [${reversedArray}]`);
+console.log('---');
+
+// 7. Tìm các giá trị trùng lặp
+function findDuplicates(arr) {
+  const counts = {};
+  const duplicates = [];
+  arr.forEach(element => {
+    counts[element] = (counts[element] || 0) + 1;
+  });
+  for (const element in counts) {
+    if (counts[element] > 1) {
+      duplicates.push(Number(element));
+    }
+  }
+  return duplicates;
+}
+
+// Thêm một vài giá trị trùng lặp để kiểm tra
+const testArray = [...myIntArray, myIntArray[3], myIntArray[7]];
+console.log(`Mảng có thêm phần tử trùng lặp: [${testArray}]`);
+const duplicates = findDuplicates(testArray);
+console.log(`Các giá trị trùng lặp: [${duplicates}]`);
+console.log('---');
+
+// 8. Xóa các phần tử trùng lặp
+function removeDuplicates(arr) {
+  return [...new Set(arr)];
+}
+
+const arrayWithoutDuplicates = removeDuplicates(testArray);
+console.log(`Mảng sau khi xóa trùng lặp: [${arrayWithoutDuplicates}]`);
+
+
+
+using System;
+using System.Linq;
+
+public class Program
+{
+    // Hàm triển khai thuật toán sắp xếp nổi bọt (Bubble Sort)
+    public static void BubbleSort(int[] arr)
+    {
+        int n = arr.Length;
+        for (int i = 0; i < n - 1; i++)
+        {
+            for (int j = 0; j < n - i - 1; j++)
+            {
+                if (arr[j] > arr[j + 1])
+                {
+                    // Hoán đổi temp và arr[j+1]
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Hàm triển khai thuật toán tìm kiếm tuyến tính (Linear Search)
+    public static bool LinearSearch(string text, string word)
+    {
+        // Chuyển cả câu và từ tìm kiếm về chữ thường để đảm bảo tìm kiếm không phân biệt chữ hoa/chữ thường
+        string lowerText = text.ToLower();
+        string lowerWord = word.ToLower();
+        return lowerText.Contains(lowerWord);
+    }
+
+    public static void Main(string[] args)
+    {
+        // Phần 1: Sắp xếp các số nguyên bằng Bubble Sort
+        Console.WriteLine("--- Sắp xếp số nguyên bằng thuật toán Bubble Sort ---");
+        int[] numbers = new int[10];
+        Console.WriteLine("Vui lòng nhập 10 số nguyên:");
+        for (int i = 0; i < 10; i++)
+        {
+            Console.Write($"Số thứ {i + 1}: ");
+            numbers[i] = Convert.ToInt32(Console.ReadLine());
+        }
+
+        Console.WriteLine("\nMảng ban đầu:");
+        Console.WriteLine($"[{string.Join(", ", numbers)}]");
+
+        BubbleSort(numbers);
+
+        Console.WriteLine("\nMảng sau khi được sắp xếp:");
+        Console.WriteLine($"[{string.Join(", ", numbers)}]");
+
+        // Phần 2: Tìm kiếm từ trong câu bằng Linear Search
+        Console.WriteLine("\n--- Tìm kiếm từ trong câu bằng thuật toán Linear Search ---");
+        Console.Write("Vui lòng nhập một câu: ");
+        string sentence = Console.ReadLine();
+
+        Console.Write("Vui lòng nhập từ cần tìm: ");
+        string word = Console.ReadLine();
+
+        bool found = LinearSearch(sentence, word);
+
+        if (found)
+        {
+            Console.WriteLine($"\nKết quả: Từ '{word}' có xuất hiện trong câu.");
+        }
+        else
+        {
+            Console.WriteLine($"\nKết quả: Từ '{word}' không xuất hiện trong câu.");
+        }
+    }
+}
+

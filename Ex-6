@@ -1,0 +1,393 @@
+using System;
+using System.Linq;
+
+public class Program
+{
+    // Hàm triển khai thuật toán sắp xếp nổi bọt (Bubble Sort)
+    public static void BubbleSort(int[] arr)
+    {
+        int n = arr.Length;
+        for (int i = 0; i < n - 1; i++)
+        {
+            for (int j = 0; j < n - i - 1; j++)
+            {
+                if (arr[j] > arr[j + 1])
+                {
+                    // Hoán đổi temp và arr[j+1]
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Hàm triển khai thuật toán tìm kiếm tuyến tính (Linear Search)
+    public static bool LinearSearch(string text, string word)
+    {
+        // Chuyển cả câu và từ tìm kiếm về chữ thường để đảm bảo tìm kiếm không phân biệt chữ hoa/chữ thường
+        string lowerText = text.ToLower();
+        string lowerWord = word.ToLower();
+        return lowerText.Contains(lowerWord);
+    }
+
+    // Hàm chứa logic cho phần sắp xếp và tìm kiếm ban đầu
+    public static void RunSortingAndSearching()
+    {
+        Console.WriteLine("\n--- Sắp xếp số nguyên bằng thuật toán Bubble Sort ---");
+        int[] numbers = new int[10];
+        Console.WriteLine("Vui lòng nhập 10 số nguyên:");
+        for (int i = 0; i < 10; i++)
+        {
+            Console.Write($"Số thứ {i + 1}: ");
+            numbers[i] = Convert.ToInt32(Console.ReadLine());
+        }
+
+        Console.WriteLine("\nMảng ban đầu:");
+        Console.WriteLine($"[{string.Join(", ", numbers)}]");
+
+        BubbleSort(numbers);
+
+        Console.WriteLine("\nMảng sau khi được sắp xếp:");
+        Console.WriteLine($"[{string.Join(", ", numbers)}]");
+
+        Console.WriteLine("\n--- Tìm kiếm từ trong câu bằng thuật toán Linear Search ---");
+        Console.Write("Vui lòng nhập một câu: ");
+        string sentence = Console.ReadLine();
+
+        Console.Write("Vui lòng nhập từ cần tìm: ");
+        string word = Console.ReadLine();
+
+        bool found = LinearSearch(sentence, word);
+
+        if (found)
+        {
+            Console.WriteLine($"\nKết quả: Từ '{word}' có xuất hiện trong câu.");
+        }
+        else
+        {
+            Console.WriteLine($"\nKết quả: Từ '{word}' không xuất hiện trong câu.");
+        }
+    }
+
+    // --- Bài tập 1: Mảng răng cưa (Jagged Array) ---
+    public static void Exercise1()
+    {
+        Console.WriteLine("\n--- Thao tác với mảng răng cưa ---");
+
+        // 1. Tạo và hiển thị mảng răng cưa với các giá trị cố định
+        Console.WriteLine("1. Mảng răng cưa với các giá trị được khởi tạo trước:");
+        int[][] jaggedArray1 = new int[][]
+        {
+            new int[] { 1, 1, 1, 1, 1 },
+            new int[] { 2, 2 },
+            new int[] { 3, 3, 3, 3 },
+            new int[] { 4, 4 }
+        };
+        PrintJaggedArray(jaggedArray1);
+
+        // 2. Tạo mảng răng cưa với giá trị ngẫu nhiên từ người dùng
+        Console.WriteLine("\n2. Tạo mảng răng cưa với số hàng và cột do người dùng nhập:");
+        Console.Write("Vui lòng nhập số hàng: ");
+        int numRows = Convert.ToInt32(Console.ReadLine());
+        int[][] jaggedArray2 = new int[numRows][];
+        Random random = new Random();
+        for (int i = 0; i < numRows; i++)
+        {
+            Console.Write($"Nhập số cột cho hàng {i + 1}: ");
+            int numCols = Convert.ToInt32(Console.ReadLine());
+            jaggedArray2[i] = new int[numCols];
+            for (int j = 0; j < numCols; j++)
+            {
+                jaggedArray2[i][j] = random.Next(1, 100);
+            }
+        }
+        Console.WriteLine("Mảng ngẫu nhiên đã tạo:");
+        PrintJaggedArray(jaggedArray2);
+
+        // 2.1. Tìm số lớn nhất của mỗi hàng và toàn bộ mảng
+        FindLargestNumbers(jaggedArray2);
+
+        // 2.2. Sắp xếp mỗi hàng tăng dần
+        SortRowsAscending(jaggedArray2);
+        Console.WriteLine("\nMảng sau khi sắp xếp mỗi hàng tăng dần:");
+        PrintJaggedArray(jaggedArray2);
+
+        // 2.3. In các số nguyên tố
+        PrintPrimeNumbers(jaggedArray2);
+
+        // 2.4. Tìm vị trí của một số
+        Console.Write("\nNhập số cần tìm: ");
+        int numberToSearch = Convert.ToInt32(Console.ReadLine());
+        FindNumberPositions(jaggedArray2, numberToSearch);
+    }
+    
+    // Hàm hỗ trợ: In mảng răng cưa
+    public static void PrintJaggedArray(int[][] arr)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            Console.WriteLine($"Hàng {i}: [{string.Join(", ", arr[i])}]");
+        }
+    }
+    
+    // Hàm hỗ trợ: Tìm số lớn nhất
+    public static void FindLargestNumbers(int[][] arr)
+    {
+        Console.WriteLine("\nTìm số lớn nhất của mỗi hàng:");
+        int maxOverall = int.MinValue;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i].Length > 0)
+            {
+                int maxInRow = arr[i].Max();
+                Console.WriteLine($"Hàng {i}: {maxInRow}");
+                if (maxInRow > maxOverall)
+                {
+                    maxOverall = maxInRow;
+                }
+            }
+        }
+        Console.WriteLine($"Số lớn nhất của toàn bộ mảng: {maxOverall}");
+    }
+    
+    // Hàm hỗ trợ: Sắp xếp mỗi hàng
+    public static void SortRowsAscending(int[][] arr)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            Array.Sort(arr[i]);
+        }
+    }
+    
+    // Hàm hỗ trợ: Kiểm tra số nguyên tố
+    public static bool IsPrime(int n)
+    {
+        if (n <= 1) return false;
+        for (int i = 2; i <= Math.Sqrt(n); i++)
+        {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+    
+    // Hàm hỗ trợ: In các số nguyên tố
+    public static void PrintPrimeNumbers(int[][] arr)
+    {
+        Console.WriteLine("\nCác số nguyên tố trong mảng:");
+        for (int i = 0; i < arr.Length; i++)
+        {
+            for (int j = 0; j < arr[i].Length; j++)
+            {
+                if (IsPrime(arr[i][j]))
+                {
+                    Console.Write($"{arr[i][j]} ");
+                }
+            }
+        }
+        Console.WriteLine();
+    }
+    
+    // Hàm hỗ trợ: Tìm vị trí của số
+    public static void FindNumberPositions(int[][] arr, int number)
+    {
+        bool found = false;
+        Console.WriteLine($"\nCác vị trí của số {number}:");
+        for (int i = 0; i < arr.Length; i++)
+        {
+            for (int j = 0; j < arr[i].Length; j++)
+            {
+                if (arr[i][j] == number)
+                {
+                    Console.WriteLine($"({i}, {j})");
+                    found = true;
+                }
+            }
+        }
+        if (!found)
+        {
+            Console.WriteLine("Không tìm thấy số trong mảng.");
+        }
+    }
+
+    // --- Bài tập 2: Quản lý thành viên ---
+    public class Member
+    {
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public int CompletedTasks { get; set; }
+    }
+    
+    public static void Exercise2()
+    {
+        Console.WriteLine("\n--- Quản lý thành viên công ty X ---");
+        Member[][] groups = InitializeGroups();
+
+        while (true)
+        {
+            Console.WriteLine("\nChọn một chức năng:");
+            Console.WriteLine("1. In danh sách tất cả thành viên");
+            Console.WriteLine("2. Tìm kiếm thành viên theo ID");
+            Console.WriteLine("3. Tìm thành viên có số nhiệm vụ hoàn thành cao nhất");
+            Console.WriteLine("4. Quay lại menu chính");
+            Console.Write("Lựa chọn của bạn: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    PrintAllMembers(groups);
+                    break;
+                case "2":
+                    Console.Write("Nhập ID của thành viên cần tìm: ");
+                    int idToFind = Convert.ToInt32(Console.ReadLine());
+                    PrintMemberById(groups, idToFind);
+                    break;
+                case "3":
+                    FindMemberWithMostTasks(groups);
+                    break;
+                case "4":
+                    return;
+                default:
+                    Console.WriteLine("Lựa chọn không hợp lệ. Vui lòng thử lại.");
+                    break;
+            }
+        }
+    }
+
+    // 1. Khởi tạo mảng với các giá trị có sẵn
+    public static Member[][] InitializeGroups()
+    {
+        Member[][] groups = new Member[3][];
+        
+        groups[0] = new Member[5]
+        {
+            new Member { Id = 101, FullName = "Nguyễn Văn A", CompletedTasks = 25 },
+            new Member { Id = 102, FullName = "Lê Thị B", CompletedTasks = 30 },
+            new Member { Id = 103, FullName = "Trần Văn C", CompletedTasks = 18 },
+            new Member { Id = 104, FullName = "Phạm Văn D", CompletedTasks = 42 },
+            new Member { Id = 105, FullName = "Hoàng Thị E", CompletedTasks = 21 }
+        };
+
+        groups[1] = new Member[3]
+        {
+            new Member { Id = 201, FullName = "Võ Văn G", CompletedTasks = 50 },
+            new Member { Id = 202, FullName = "Đặng Thị H", CompletedTasks = 35 },
+            new Member { Id = 203, FullName = "Bùi Văn I", CompletedTasks = 29 }
+        };
+
+        groups[2] = new Member[6]
+        {
+            new Member { Id = 301, FullName = "Lý Văn K", CompletedTasks = 38 },
+            new Member { Id = 302, FullName = "Tôn Nữ L", CompletedTasks = 45 },
+            new Member { Id = 303, FullName = "Phan Văn M", CompletedTasks = 15 },
+            new Member { Id = 304, FullName = "Cao Văn N", CompletedTasks = 55 },
+            new Member { Id = 305, FullName = "Đinh Văn O", CompletedTasks = 22 },
+            new Member { Id = 306, FullName = "Nguyễn Thị P", CompletedTasks = 48 }
+        };
+
+        return groups;
+    }
+
+    // 2. In danh sách tất cả thành viên
+    public static void PrintAllMembers(Member[][] groups)
+    {
+        Console.WriteLine("\n--- Danh sách tất cả thành viên ---");
+        for (int i = 0; i < groups.Length; i++)
+        {
+            Console.WriteLine($"\nNhóm {i + 1}:");
+            foreach (var member in groups[i])
+            {
+                Console.WriteLine($"- ID: {member.Id}, Tên: {member.FullName}, Nhiệm vụ hoàn thành: {member.CompletedTasks}");
+            }
+        }
+    }
+
+    // 3. In thông tin thành viên khi biết ID
+    public static void PrintMemberById(Member[][] groups, int id)
+    {
+        foreach (var group in groups)
+        {
+            foreach (var member in group)
+            {
+                if (member.Id == id)
+                {
+                    Console.WriteLine("\n--- Thông tin thành viên ---");
+                    Console.WriteLine($"- ID: {member.Id}");
+                    Console.WriteLine($"- Tên: {member.FullName}");
+                    Console.WriteLine($"- Nhiệm vụ hoàn thành: {member.CompletedTasks}");
+                    return;
+                }
+            }
+        }
+        Console.WriteLine("\nKhông tìm thấy thành viên với ID đã nhập.");
+    }
+
+    // 4. In thành viên có số nhiệm vụ cao nhất
+    public static void FindMemberWithMostTasks(Member[][] groups)
+    {
+        Member topMember = null;
+        int maxTasks = -1;
+
+        foreach (var group in groups)
+        {
+            foreach (var member in group)
+            {
+                if (member.CompletedTasks > maxTasks)
+                {
+                    maxTasks = member.CompletedTasks;
+                    topMember = member;
+                }
+            }
+        }
+
+        if (topMember != null)
+        {
+            Console.WriteLine("\n--- Thành viên có số nhiệm vụ hoàn thành cao nhất ---");
+            Console.WriteLine($"- ID: {topMember.Id}");
+            Console.WriteLine($"- Tên: {topMember.FullName}");
+            Console.WriteLine($"- Nhiệm vụ hoàn thành: {topMember.CompletedTasks}");
+        }
+        else
+        {
+            Console.WriteLine("\nKhông có thành viên nào trong danh sách.");
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("--- MENU CHƯƠNG TRÌNH ---");
+            Console.WriteLine("1. Sắp xếp & Tìm kiếm cơ bản");
+            Console.WriteLine("2. Thao tác với mảng răng cưa (Jagged Array)");
+            Console.WriteLine("3. Quản lý thành viên");
+            Console.WriteLine("4. Thoát");
+            Console.Write("Vui lòng nhập lựa chọn của bạn: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    RunSortingAndSearching();
+                    break;
+                case "2":
+                    Exercise1();
+                    break;
+                case "3":
+                    Exercise2();
+                    break;
+                case "4":
+                    Console.WriteLine("\nChương trình kết thúc. Tạm biệt!");
+                    return;
+                default:
+                    Console.WriteLine("Lựa chọn không hợp lệ. Vui lòng nhấn Enter để thử lại.");
+                    Console.ReadLine();
+                    break;
+            }
+            Console.WriteLine("\nNhấn Enter để quay lại menu chính.");
+            Console.ReadLine();
+        }
+    }
+}
